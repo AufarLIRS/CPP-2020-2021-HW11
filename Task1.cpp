@@ -1,11 +1,11 @@
 #include "Task1.h"
 
-std::mutex mutex;
+std::mutex mutex1;
 std::vector<int> vecPartSums(10);  //общий вектор частичных сумм потоков
 
 void sumVectElems(std::vector<int>& vec, int start, int end, int i)
 {
-  std::lock_guard<std::mutex> guard(mutex);
+  std::lock_guard<std::mutex> guard(mutex1);
   int sum = 0;
   for (int i = start; i < end; i++)
   {
@@ -16,7 +16,7 @@ void sumVectElems(std::vector<int>& vec, int start, int end, int i)
   std::cout << "Thread #" << i << " has ended to work" << std::endl;
 }
 
-std::vector<int> Start(int vectorLength)
+std::vector<int> Start1(int vectorLength)
 {
   std::vector<int> large_vector(vectorLength, 1);
 
