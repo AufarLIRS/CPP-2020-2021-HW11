@@ -4,4 +4,8 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
+        Task1.cpp \
         main.cpp
+
+HEADERS += \
+    Task1.h
