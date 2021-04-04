@@ -123,8 +123,8 @@ void task_3()
 
 int main()
 {
-  // task_1();
-  // task_2();
+  task_1();
+  task_2();
   task_3();
 
   return 0;
