@@ -1,9 +1,33 @@
 #include <iostream>
-
-using namespace std;
+#include "task1.h"
 
 int main()
 {
-    cout << "Hello World!" << endl;
-    return 0;
+  // Task1
+  std::vector<int> v1000;
+  Task1::VectorPadding(v1000);
+  std::thread t1(Task1::GetVectorSum, v1000, 0, 0);
+  std::thread t2(Task1::GetVectorSum, v1000, 1, 100);
+  std::thread t3(Task1::GetVectorSum, v1000, 2, 200);
+  std::thread t4(Task1::GetVectorSum, v1000, 3, 300);
+  std::thread t5(Task1::GetVectorSum, v1000, 4, 400);
+  std::thread t6(Task1::GetVectorSum, v1000, 5, 500);
+  std::thread t7(Task1::GetVectorSum, v1000, 6, 600);
+  std::thread t8(Task1::GetVectorSum, v1000, 7, 700);
+  std::thread t9(Task1::GetVectorSum, v1000, 8, 800);
+  std::thread t10(Task1::GetVectorSum, v1000, 9, 900);
+
+  t1.join();
+  t2.join();
+  t3.join();
+  t4.join();
+  t5.join();
+  t6.join();
+  t7.join();
+  t8.join();
+  t9.join();
+  t10.join();
+
+  std::cout << Task1::GetSumv10() << std::endl;
+  return 0;
 }
