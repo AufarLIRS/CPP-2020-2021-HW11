@@ -5,7 +5,9 @@ CONFIG -= qt
 
 SOURCES += \
         main.cpp \
-        task1.cpp
+        task1.cpp \
+        task2.cpp
 
 HEADERS += \
-    task1.h
+    task1.h \
+    task2.h
