@@ -46,8 +46,8 @@ auto vector_sum(Iterator begin, Iterator end)
 }
 
 // DotProductOfVectors
-//template <typename Iterator>
-//auto DotProductOfVectors(Iterator v1_begin, Iterator v1_end)
+// template <typename Iterator>
+// auto DotProductOfVectors(Iterator v1_begin, Iterator v1_end)
 //{
 //  return multithreaded_ranges(v1_begin, v1_end, [](auto b1, auto e1) { return std::inner_product(b1, e1); });
 //}
@@ -64,7 +64,7 @@ void task1()
 }
 
 // Second Task
-//void task2()
+// void task2()
 //{
 //  const size_t count = 1000;
 //  std::vector<int> data1(count);
@@ -79,7 +79,7 @@ void task1()
 int main()
 {
   task1();
-//  task2();
+  //  task2();
 
   return 0;
 }
