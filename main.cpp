@@ -1,6 +1,8 @@
 #include <iostream>
 #include "task1.h"
 #include "task2.h"
+#include <condition_variable>
+
 int main()
 {
   // Task1
@@ -29,31 +31,53 @@ int main()
   //  t10.join();
   // std::cout << Task1::GetSumv10() << std::endl;
   // task2
+  //  std::vector<int> a1000;
+  //  std::vector<int> b1000;
+  //  task2::VectorPaddings(a1000, b1000);
+  //  std::thread th1(task2::GetScalarProduct, a1000, b1000, 0, 0);
+  //  std::thread th2(task2::GetScalarProduct, a1000, b1000, 1, 100);
+  //  std::thread th3(task2::GetScalarProduct, a1000, b1000, 2, 200);
+  //  std::thread th4(task2::GetScalarProduct, a1000, b1000, 3, 300);
+  //  std::thread th5(task2::GetScalarProduct, a1000, b1000, 4, 400);
+  //  std::thread th6(task2::GetScalarProduct, a1000, b1000, 5, 500);
+  //  std::thread th7(task2::GetScalarProduct, a1000, b1000, 6, 600);
+  //  std::thread th8(task2::GetScalarProduct, a1000, b1000, 7, 700);
+  //  std::thread th9(task2::GetScalarProduct, a1000, b1000, 8, 800);
+  //  std::thread th10(task2::GetScalarProduct, a1000, b1000, 9, 900);
+
+  //  th1.join();
+  //  th2.join();
+  //  th3.join();
+  //  th4.join();
+  //  th5.join();
+  //  th6.join();
+  //  th7.join();
+  //  th8.join();
+  //  th9.join();
+  //  th10.join();
+
+  //  std::cout << task2::GetSumv10() << std::endl;
+
+  // task3
+
   std::vector<int> a1000;
   std::vector<int> b1000;
   task2::VectorPaddings(a1000, b1000);
-  std::thread th1(task2::GetScalarProduct, a1000, b1000, 0, 0);
-  std::thread th2(task2::GetScalarProduct, a1000, b1000, 1, 100);
-  std::thread th3(task2::GetScalarProduct, a1000, b1000, 2, 200);
-  std::thread th4(task2::GetScalarProduct, a1000, b1000, 3, 300);
-  std::thread th5(task2::GetScalarProduct, a1000, b1000, 4, 400);
-  std::thread th6(task2::GetScalarProduct, a1000, b1000, 5, 500);
-  std::thread th7(task2::GetScalarProduct, a1000, b1000, 6, 600);
-  std::thread th8(task2::GetScalarProduct, a1000, b1000, 7, 700);
-  std::thread th9(task2::GetScalarProduct, a1000, b1000, 8, 800);
-  std::thread th10(task2::GetScalarProduct, a1000, b1000, 9, 900);
-
-  th1.join();
-  th2.join();
-  th3.join();
-  th4.join();
-  th5.join();
-  th6.join();
-  th7.join();
-  th8.join();
-  th9.join();
-  th10.join();
+  std::array<std::thread, 10> threads;
+  int step = 0;
+  int inc100 = 0;
+  for (int i = 0; i < 10; i++)
+  {
+    threads[i] = std::thread(task2::GetScalarProduct, a1000, b1000, step, inc100);
+    step += 1;
+    inc100 += 100;
+  }
+  std::this_thread::sleep_for(std::chrono::milliseconds(1));
+  task2::go();
+  for (auto& th : threads)
+    th.join();
 
   std::cout << task2::GetSumv10() << std::endl;
+
   return 0;
 }
