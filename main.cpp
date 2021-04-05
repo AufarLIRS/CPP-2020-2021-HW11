@@ -27,7 +27,7 @@ void ScalarProductVectors(std::vector<int>& vec1, std::vector<int>& vec2, int st
     sum += PartProductsOfVectors[i];
   }
 
-  PartSums.emplace_back(sum);
+  PartSums.insert(PartSums.begin() + i, sum);
   std::cout << "Thread #" << i << " has ended to work" << std::endl;
 }
 
@@ -79,14 +79,14 @@ int main()
     start += step;
     end += step;
   }
-
+  std::this_thread::sleep_for(std::chrono::milliseconds(1));
   Go();
 
   for (auto& th : threads)
     th.join();
 
   sum_of_elems = 0;
-  for (auto& n : vectorElemsProduct)
+  for (auto& n : PartSums)
     sum_of_elems += n;
   std::cout << "Scalar product of two vectors = " << sum_of_elems << std::endl;
   std::cout << std::endl;

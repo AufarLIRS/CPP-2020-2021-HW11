@@ -4,9 +4,9 @@
 #include <iostream>
 #include <vector>
 #include <thread>
-#include <mutex>
+#include <future>
 
-void sumVectElems(std::vector<int>&, int, int, int);
+int sumVectElems(std::vector<int>&, int, int, int);
 std::vector<int> Start1(int);
 
 #endif  // TASK1_H

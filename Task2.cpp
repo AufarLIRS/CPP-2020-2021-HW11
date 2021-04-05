@@ -1,25 +1,25 @@
 #include "Task2.h"
 
-std::mutex mutex2;
-std::vector<int> vecPartProducts;  //общий вектор произведений элементов векторов
+std::vector<int> vectorPartProducts;  //общий вектор произведений элементов векторов
 
 void ProductVectors(std::vector<int>& vec1, std::vector<int>& vec2, int start, int end, int i)
 {
-  mutex2.lock();
   int product;
   for (int i = start; i < end; i++)
   {
     product = vec1[i] * vec2[i];
-    vecPartProducts.push_back(product);
+    vectorPartProducts[i] = product;
   }
+  std::cout << "Thread #" << i << " has put his products to the common vector in [" << start << ";" << end << ")"
+            << std::endl;
   std::cout << "Thread #" << i << " has ended to work" << std::endl;
-  mutex2.unlock();
 }
 
 std::vector<int> Start2(int vectorLength)
 {
   std::vector<int> vec1(vectorLength, 3);
   std::vector<int> vec2(vectorLength, 5);
+  vectorPartProducts.resize(vectorLength);
 
   std::array<std::thread, 10> threads;
 
@@ -36,5 +36,5 @@ std::vector<int> Start2(int vectorLength)
 
   for (auto& th : threads)
     th.join();
-  return vecPartProducts;
+  return vectorPartProducts;
 }
