@@ -2,15 +2,15 @@
 
 std::vector<int> vectorPartSums(10);  //общий вектор частичных сумм потоков
 
-int sumVectElems(std::vector<int>& initialVector, int start, int end, int i)
+int sumVectElems(std::vector<int>& initialVector, int start, int end, int thread_number)
 {
   int partial_sum = 0;
   for (int i = start; i < end; i++)
   {
     partial_sum += initialVector[i];
   }
-  std::cout << "Thread #" << i << " wants to push it's sum to the general vector" << std::endl;
-  std::cout << "Thread #" << i << " has ended to work" << std::endl;
+  std::cout << "Thread #" << thread_number << " wants to push it's sum to the general vector" << std::endl;
+  std::cout << "Thread #" << thread_number << " has ended to work" << std::endl;
   return partial_sum;
 }
 

@@ -2,7 +2,7 @@
 
 std::vector<int> vectorPartProducts;  //общий вектор произведений элементов векторов
 
-void ProductVectors(std::vector<int>& vec1, std::vector<int>& vec2, int start, int end, int i)
+void ProductVectors(std::vector<int>& vec1, std::vector<int>& vec2, int start, int end, int thread_number)
 {
   int product;
   for (int i = start; i < end; i++)
@@ -10,9 +10,9 @@ void ProductVectors(std::vector<int>& vec1, std::vector<int>& vec2, int start, i
     product = vec1[i] * vec2[i];
     vectorPartProducts[i] = product;
   }
-  std::cout << "Thread #" << i << " has put his products to the common vector in [" << start << ";" << end << ")"
-            << std::endl;
-  std::cout << "Thread #" << i << " has ended to work" << std::endl;
+  std::cout << "Thread #" << thread_number << " has put his products to the common vector in [" << start << ";" << end
+            << ")" << std::endl;
+  std::cout << "Thread #" << thread_number << " has ended to work" << std::endl;
 }
 
 std::vector<int> Start2(int vectorLength)

@@ -7,7 +7,7 @@ std::condition_variable conditionVar;
 std::vector<int> PartProductsOfVectors;  //общий вектор произведений элементов векторов
 std::vector<int> PartSums(10);
 
-void ScalarProductVectors(std::vector<int>& vec1, std::vector<int>& vec2, int start, int end, int i)
+void ScalarProductVectors(std::vector<int>& vec1, std::vector<int>& vec2, int start, int end, int thread_number)
 {
   std::unique_lock<std::mutex> uniqueLck(mutex3);
   int product;
@@ -16,10 +16,10 @@ void ScalarProductVectors(std::vector<int>& vec1, std::vector<int>& vec2, int st
     product = vec1[i] * vec2[i];
     PartProductsOfVectors.insert(PartProductsOfVectors.begin() + i, product);
   }
-  std::cout << "Thread #" << i << " is waiting" << std::endl;
+  std::cout << "Thread #" << thread_number << " is waiting" << std::endl;
 
   conditionVar.wait(uniqueLck);
-  std::cout << "Thread #" << i << " is continuing to work after waiting" << std::endl;
+  std::cout << "Thread #" << thread_number << " is continuing to work after waiting" << std::endl;
 
   int sum = 0;
   for (int i = start; i < end; i++)
@@ -27,8 +27,8 @@ void ScalarProductVectors(std::vector<int>& vec1, std::vector<int>& vec2, int st
     sum += PartProductsOfVectors[i];
   }
 
-  PartSums.insert(PartSums.begin() + i, sum);
-  std::cout << "Thread #" << i << " has ended to work" << std::endl;
+  PartSums.insert(PartSums.begin() + thread_number, sum);
+  std::cout << "Thread #" << thread_number << " has ended to work" << std::endl;
 }
 
 void Go()
