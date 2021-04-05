@@ -21,20 +21,16 @@ std::vector<int> Start2(int vectorLength)
   std::vector<int> vec2(vectorLength, 5);
   vectorPartProducts.resize(vectorLength);
 
-  std::array<std::thread, 10> threads;
-
   int step = vectorLength / 10;
   int start = 0;
   int end = step;
 
   for (int i = 0; i < 10; i++)
   {
-    threads[i] = std::thread(ProductVectors, std::ref(vec1), std::ref(vec2), start, end, i);
+    std::async(ProductVectors, std::ref(vec1), std::ref(vec2), start, end, i);
     start += step;
     end += step;
   }
 
-  for (auto& th : threads)
-    th.join();
   return vectorPartProducts;
 }
