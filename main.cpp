@@ -17,7 +17,7 @@ int partialSum(const vector<int>& vector, size_t from, size_t to)
     {
         sum += vector.at(i);
     }
-        return sum;
+    return sum;
 }
 
 void FirstTask()
@@ -29,14 +29,14 @@ void FirstTask()
     for (auto i = 0; i < 1000; i += 100)
     {
          futures.push_back(async(launch::async, partialSum, ref(v1), i, i + 100));
-        }
-        auto globalsum = 0;
-        for (auto& e : futures)
-        {
-         globalsum += e.get();
+    }
+    auto globalsum = 0;
+    for (auto& e : futures)
+    {
+        globalsum += e.get();
     }
 
-cout << "Task 1 sum: " << globalsum << endl;
+    cout << "Task 1 sum: " << globalsum << endl;
 }
 
 static mutex mtx;
@@ -93,7 +93,7 @@ void SecondAndThirdTask()
 
 int main()
 {
-FirstTask();
-SecondAndThirdTask();
-return 0;
+    FirstTask();
+    SecondAndThirdTask();
+    return 0;
 }
