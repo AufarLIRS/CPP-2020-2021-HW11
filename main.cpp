@@ -3,53 +3,70 @@
 #include <algorithm>
 #include <thread>
 #include <numeric>
+#include <future>
+#include <execution>
 
 // multithreaded_ranges
 template <typename Iterator, typename Func>
-auto multithreaded_ranges(Iterator begin, Iterator end, Func&& func)
+auto multithreaded_ranges_1(Iterator begin, Iterator end, Func&& func)
 {
-  //  int thread_count = std::thread::hardware_concurrency(); - Создает 4 потока
-
   auto size = std::distance(begin, end);
-  int thread_count = 10;
-  std::cout << "Hardware threads: " << thread_count << std::endl;
-
-  std::vector<std::thread> threads;
-  std::vector<typename std::iterator_traits<Iterator>::value_type> mins(thread_count);
+  int task_count = 10;
+  std::cout << "Hardware threads: " << task_count << std::endl;
+  std::vector<std::future<typename std::iterator_traits<Iterator>::value_type>> tasks;
 
   auto first = begin;
   auto last = first;
-  size /= thread_count;
+  size /= task_count;
 
-  for (int i = 0; i < thread_count; ++i)
+  for (int i = 0; i < task_count; ++i)
   {
     first = last;
-    if (i == thread_count - 1)
+    if (i == task_count - 1)
       last = end;
     else
       std::advance(last, size);
 
-    threads.emplace_back([first, last, &func, &r = mins[i]]() { r = std::forward<Func>(func)(first, last); });
+    tasks.emplace_back(
+        std::async(std::launch::async, [first, last, &func]() { return std::forward<Func>(func)(first, last); }));
   }
 
-  for (auto& t : threads)
-    t.join();
+  std::vector<typename std::iterator_traits<Iterator>::value_type> mins;
+
+  for (auto& t : tasks)
+    mins.push_back(t.get());
 
   return std::forward<Func>(func)(std::begin(mins), std::end(mins));
+}
+
+// multithreaded_ranges_2
+template <typename Iterator, typename F>
+auto multithreaded_ranges_2(Iterator begin1, Iterator end1, Iterator begin2, F&& f)
+{
+  return std::forward<F>(f)(begin1, end1, begin2);
+  // return std::transform(std::execution::par, begin1, end1, begin2, begin1, std::forward<F>(f));
 }
 
 // vector_sum
 template <typename Iterator>
 auto vector_sum(Iterator begin, Iterator end)
 {
-  return multithreaded_ranges(begin, end, [](auto b, auto e) { return std::accumulate(b, e, 0); });
+  return multithreaded_ranges_1(begin, end, [](auto b, auto e) { return std::accumulate(b, e, 0); });
 }
 
 // DotProductOfVectors
+template <typename Iterator>
+auto DotProductOfVectors(Iterator v1_begin, Iterator v1_end, Iterator v2_begin)
+{
+  return multithreaded_ranges_2(v1_begin, v1_end, v2_begin,
+                                [](auto b1, auto e1, auto b2) { return std::inner_product(b1, e1, b2, 0); });
+}
+
 // template <typename Iterator>
-// auto DotProductOfVectors(Iterator v1_begin, Iterator v1_end)
+// auto DotProductOfVectors(Iterator v1_begin, Iterator v1_end, Iterator v2_begin)
 //{
-//  return multithreaded_ranges(v1_begin, v1_end, [](auto b1, auto e1) { return std::inner_product(b1, e1); });
+//  return std::transform(std::execution::par, v1_begin, v1_end, v2_begin,
+//                        std::inner_product(v1_begin, v1_end, v2_begin, 0));
 //}
 
 // First Task
@@ -64,22 +81,22 @@ void task1()
 }
 
 // Second Task
-// void task2()
-//{
-//  const size_t count = 1000;
-//  std::vector<int> data1(count);
-//  generate(data1.begin(), data1.end(), rand);
-//  std::vector<int> data2(count);
-//  generate(data2.begin(), data2.end(), rand);
+void task2()
+{
+  const size_t count = 1000;
+  std::vector<int> data1(count);
+  generate(data1.begin(), data1.end(), rand);
+  std::vector<int> data2(count);
+  generate(data2.begin(), data2.end(), rand);
 
-//  auto task2_result = DotProductOfVectors(std::begin(data1), std::end(data1));
-//  std::cout << "Dot product of vectors  = " << task2_result << std::endl;
-//}
+  auto task2_result = DotProductOfVectors(std::begin(data1), std::end(data1), std::begin(data2));
+  std::cout << "Dot product of vectors  = " << task2_result << std::endl;
+}
 
 int main()
 {
   task1();
-  //  task2();
+  task2();
 
   return 0;
 }
