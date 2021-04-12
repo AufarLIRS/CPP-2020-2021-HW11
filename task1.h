@@ -10,7 +10,7 @@ private:
 
 public:
   static std::vector<int> v10;
-  static void VectorPadding(std::vector<int>& v1000);
+  static void VectorFlooding(std::vector<int>& v1000);
   static void GetVectorSum(std::vector<int> v1000, int step = 0, int inc100 = 0);
   static int GetSumv10();
 };

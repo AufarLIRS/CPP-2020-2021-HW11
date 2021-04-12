@@ -6,11 +6,11 @@ std::mutex task2::mtx;
 void task2::GetScalarProduct(std::vector<int> a, std::vector<int> b, int step, int inc100)
 {
   std::unique_lock<std::mutex> lck(mtx);
+  cv.wait(lck);
   for (int i = 0 + inc100; i < 100 + inc100; i++)
   {
     v10[step] += a[i] * b[i];
   }
-  cv.wait(lck);
 }
 int task2::getRandomNumber(int min, int max)
 {

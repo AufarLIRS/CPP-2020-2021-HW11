@@ -10,7 +10,7 @@ void Task1::GetVectorSum(std::vector<int> v1000, int step, int inc100)
     v10[step] += v1000[i];
   }
 }
-void Task1::VectorPadding(std::vector<int>& v1000)
+void Task1::VectorFlooding(std::vector<int>& v1000)
 {
   for (int i = 0; i < 1000; i++)
   {
