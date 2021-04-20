@@ -39,14 +39,6 @@ auto multithreaded_ranges_1(Iterator begin, Iterator end, Func&& func)
   return std::forward<Func>(func)(std::begin(mins), std::end(mins));
 }
 
-// multithreaded_ranges_2
-template <typename Iterator, typename F>
-auto multithreaded_ranges_2(Iterator begin1, Iterator end1, Iterator begin2, F&& f)
-{
-  return std::forward<F>(f)(begin1, end1, begin2);
-  // return std::transform(std::execution::par, begin1, end1, begin2, begin1, std::forward<F>(f));
-}
-
 // vector_sum
 template <typename Iterator>
 auto vector_sum(Iterator begin, Iterator end)
@@ -58,16 +50,9 @@ auto vector_sum(Iterator begin, Iterator end)
 template <typename Iterator>
 auto DotProductOfVectors(Iterator v1_begin, Iterator v1_end, Iterator v2_begin)
 {
-  return multithreaded_ranges_2(v1_begin, v1_end, v2_begin,
-                                [](auto b1, auto e1, auto b2) { return std::inner_product(b1, e1, b2, 0); });
+  return std::transform(std::execution::par, v1_begin, v1_end, v2_begin,
+                        std::inner_product(v1_begin, v1_end, v2_begin, 0));
 }
-
-// template <typename Iterator>
-// auto DotProductOfVectors(Iterator v1_begin, Iterator v1_end, Iterator v2_begin)
-//{
-//  return std::transform(std::execution::par, v1_begin, v1_end, v2_begin,
-//                        std::inner_product(v1_begin, v1_end, v2_begin, 0));
-//}
 
 // First Task
 void task1()
@@ -90,7 +75,7 @@ void task2()
   generate(data2.begin(), data2.end(), rand);
 
   auto task2_result = DotProductOfVectors(std::begin(data1), std::end(data1), std::begin(data2));
-  std::cout << "Dot product of vectors  = " << task2_result << std::endl;
+  //std::cout << "Dot product of vectors  = " << task2_result << std::endl;
 }
 
 int main()
