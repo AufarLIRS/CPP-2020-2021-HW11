@@ -1,9 +1,10 @@
-#include <iostream>
-
-using namespace std;
+#include "Task1.cpp"
+#include "Task2.cpp"
+#include "Task3.cpp"
 
 int main()
 {
-    cout << "Hello World!" << endl;
-    return 0;
+  Task1();
+  Task2();
+  Task3();
 }
