@@ -4,4 +4,10 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        main.cpp
+        main.cpp \
+    mythread.cpp \
+    task2thread.cpp
+
+HEADERS += \
+    mythread.h \
+    task2thread.h
